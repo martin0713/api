@@ -16,3 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::redirect('/articles', 'api/articles', 302);
+
+Route::get('/user/{id}', function (string $id) {
+    return 'user id: '.$id;
+});
+Route::get('/name/{name}', function (string $name) {
+    return $name;
+})->whereAlpha('name');
