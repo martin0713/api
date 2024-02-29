@@ -15,4 +15,8 @@ class Article extends Model
         'author_id',
         'image',
     ];
+
+    protected $casts = [
+        'records' => 'array',
+    ];
 }
