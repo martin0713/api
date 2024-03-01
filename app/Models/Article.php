@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Article extends Model
 {
     use HasFactory;
@@ -12,11 +11,15 @@ class Article extends Model
         'title',
         'body',
         'records',
-        'author_id',
+        'user_id',
         'image',
     ];
 
     protected $casts = [
         'records' => 'array',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

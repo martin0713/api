@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Article;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,18 @@ Route::get('/articles', function () {
     return Article::all();
 });
 
-Route::get('/articles/{id}', function (Article $article, string $id) {
-    return $article::find($id);
+Route::get('/articles/{id}', function (string $id) {
+    $article = Article::find($id);
+    $user = $article->user;
+    return $article;
 });
+
+Route::get('/user/{id}', function ($id) {
+    $user = User::find($id);
+    $articles = $user->articles;
+    return $articles;
+});
+
 // todo change http method to POST
 Route::get('/articles/{id}/edit', function (Article $article, string $id) {
     $target = $article::find($id);
