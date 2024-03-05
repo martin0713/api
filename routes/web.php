@@ -25,3 +25,11 @@ Route::get('/user/{id}', function (string $id) {
 Route::get('/name/{name}', function (string $name) {
     return $name;
 })->whereAlpha('name');
+
+Route::get('/failure', function () {
+    return 'fail to add article';
+});
+
+Route::get('/failure/update', function () {
+    return 'fail to update article';
+});

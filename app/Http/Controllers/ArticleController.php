@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Http\Requests\ArticleStoreRequest;
+use App\Http\Requests\ArticleUpdateRequest;
 
 class ArticleController extends Controller
 {
@@ -33,15 +35,11 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleStoreRequest $request)
     {
         $article = new Article;
-        $article->title = $request->title;
-        $article->body = $request->body;
-        $article->records = array('time' => 1);
-        $article->user_id = $request->user_id ?: rand(1,3);
-        $article->image = $request->image ?: 'Article Image';
-        $article->save();
+        $validated = $request->validated();
+        $article->create($validated);
         return $article;
     }
 
@@ -75,15 +73,13 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
+    public function update(ArticleUpdateRequest $request, Article $article)
     {
-        $article->title = $request->input('title');
-        $article->body = $request->input('body');
-        $article->image = $request->input('image') ?: $article->image;
+        $validated = $request->validated();
         $records = $article->records;
         $records['time']++;
-        $article->records = $records;
-        $article->save();
+        $validated['records'] = $records;
+        $article->update($validated);
         return $article;
     }
 
