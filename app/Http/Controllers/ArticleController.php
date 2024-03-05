@@ -39,8 +39,8 @@ class ArticleController extends Controller
         $article->title = $request->title;
         $article->body = $request->body;
         $article->records = array('time' => 1);
-        $article->user_id = rand(1, 3);
-        $article->image = uniqid();
+        $article->user_id = $request->user_id ?: rand(1,3);
+        $article->image = $request->image ?: 'Article Image';
         $article->save();
         return $article;
     }
@@ -79,6 +79,7 @@ class ArticleController extends Controller
     {
         $article->title = $request->input('title');
         $article->body = $request->input('body');
+        $article->image = $request->input('image') ?: $article->image;
         $records = $article->records;
         $records['time']++;
         $article->records = $records;
