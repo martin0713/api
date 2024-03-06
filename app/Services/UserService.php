@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
+use App\Http\Resources\UserResource;
 
 class UserService{
     private $repo;
@@ -13,6 +14,6 @@ class UserService{
     public function find(string $id) {
         $user = $this->repo->find($id);
         $user->articles;
-        return $user;
+        return new UserResource($user);
     }
 };

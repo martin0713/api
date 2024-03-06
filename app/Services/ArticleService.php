@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Article;
 use App\Repositories\ArticleRepository;
+use App\Http\Resources\ArticleResource;
 
 /**
  * Class ArticleService.
@@ -16,7 +16,8 @@ class ArticleService
     }
 
     public function all() {
-        return $this->repo->all();
+        $articles = $this->repo->all();
+        return ArticleResource::collection($articles);
     }
 
     public function create($validated) {
@@ -24,7 +25,8 @@ class ArticleService
     }
 
     public function find(string $id) {
-        return $this->repo->find($id);
+        $article = $this->repo->find($id);
+        return new ArticleResource($article);
     }
 
     public function update($validated, $article) {
