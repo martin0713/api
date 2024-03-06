@@ -28,7 +28,7 @@ class ArticleStoreRequest extends FormRequest
             'body' =>'required|string',
             'image' =>'required|string',
             'user_id' =>'required|integer',
-            'records.*.time' =>'required|integer'
+            'records.time' =>'required|integer'
         ];
     }
     public function messages()
@@ -42,7 +42,7 @@ class ArticleStoreRequest extends FormRequest
             'image.string' => 'The image must be a string.',
             'user_id.required' => 'The user_id field is required.',
             'user_id.integer' => 'The user_id must be an integer.',
-            'records.*.time.required' => 'The time field is required.',
+            'records.time.required' => 'The time field is required.',
         ];
     }
 

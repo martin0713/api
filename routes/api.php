@@ -21,5 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('articles', ArticleController::class);
-Route::post('articles/all', [ArticleController::class, 'updateAll']);
 Route::get('/user/{id}', [UserController::class, 'show']);

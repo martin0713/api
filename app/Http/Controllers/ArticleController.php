@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use Illuminate\Http\Request;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
+use App\Services\ArticleService;
 
 class ArticleController extends Controller
 {
+    private $service;
+    public function __construct(ArticleService $articleService) {
+        $this->service = $articleService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Article::cursor();
+        return $this->service->all();
     }
 
     /**
@@ -37,10 +41,9 @@ class ArticleController extends Controller
      */
     public function store(ArticleStoreRequest $request)
     {
-        $article = new Article;
         $validated = $request->validated();
-        $article->create($validated);
-        return $article;
+        $this->service->create($validated);
+        return $validated;
     }
 
     /**
@@ -49,10 +52,9 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(string $id)
     {
-        $article->user;
-        return $article;
+        return $this->service->find($id);
     }
 
     /**
@@ -76,11 +78,7 @@ class ArticleController extends Controller
     public function update(ArticleUpdateRequest $request, Article $article)
     {
         $validated = $request->validated();
-        $records = $article->records;
-        $records['time']++;
-        $validated['records'] = $records;
-        $article->update($validated);
-        return $article;
+        return $this->service->update($validated, $article);
     }
 
     /**
@@ -91,16 +89,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        $article->delete();
+        $this->service->delete($article);
         return redirect(route('articles.index'));
-    }
-
-    public function updateAll()
-    {
-        $articles = Article::all();
-        $articles->each->update([
-            'body' => uniqid()
-        ]);
-        return $articles;
     }
 }
