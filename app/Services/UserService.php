@@ -43,6 +43,8 @@ class UserService{
 
     public function logout() {
         Auth::logout();
-        return redirect('/api/login');
+        session()->regenerateToken();
+        session()->invalidate();
+        return redirect(route('login'));
     }
 };

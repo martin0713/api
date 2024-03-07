@@ -30,5 +30,5 @@ class UserStoreRequest extends FormRequest
         ];
     }
 
-    protected $redirect = '/api/register';
+    protected $redirect = '/api/auth/register';
 }

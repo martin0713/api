@@ -29,5 +29,5 @@ class UserLoginRequest extends FormRequest
         ];
     }
 
-    protected $redirect = '/api/login';
+    protected $redirect = '/api/auth/login';
 }

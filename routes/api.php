@@ -20,14 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('articles', ArticleController::class, ['only' => ['index','store', 'show', 'update', 'destroy']]);
-Route::get('/user/{id}', [UserController::class, 'show']);
-Route::get('/register', function () {
-    return 'register';
+Route::middleware('userAuth')->resource('articles', ArticleController::class, ['only' => ['index','store', 'show', 'update', 'destroy']]);
+Route::middleware('userAuth')->get('/user/{id}', [UserController::class, 'show']);
+Route::group(['prefix' => 'auth'], function() {
+    Route::get('/register', fn() => 'register')->name('register');
+    Route::get('/login', array(fn() => 'login', 'as' => 'login'));
+    Route::post('/register', [UserController::class, 'store']);
+    Route::post('/login', [UserController::class, 'login']);
+    Route::post('/logout', [UserController::class, 'logout']);
 });
-Route::get('/login', function () {
-    return 'login';
-});
-Route::post('/register', [UserController::class, 'store']);
-Route::post('/login', [UserController::class, 'login']);
-Route::post('/logout', [UserController::class, 'logout']);
