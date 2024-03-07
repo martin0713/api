@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\ArticleRepository;
 use App\Http\Resources\ArticleResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ArticleService.
@@ -21,6 +22,7 @@ class ArticleService
     }
 
     public function create($validated) {
+        $validated['user_id'] = Auth::id();
         return $this->repo->create($validated);
     }
 

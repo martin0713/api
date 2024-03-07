@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use App\Services\ArticleService;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -56,6 +57,10 @@ class ArticleController extends Controller
      */
     public function update(ArticleUpdateRequest $request, Article $article)
     {
+        $user = Auth::user();
+        if ($user->cant('update', $article)) {
+            return response()->json(['message'=> 'You don\'t have permission to update']);
+        }
         $validated = $request->validated();
         return $this->service->update($validated, $article);
     }
