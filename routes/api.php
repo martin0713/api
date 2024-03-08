@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('userAuth')->resource('articles', ArticleController::class, ['only' => ['index','store', 'show', 'update', 'destroy']]);
 Route::middleware('userAuth')->get('/user/{id}', [UserController::class, 'show']);
+
 Route::group(['prefix' => 'auth'], function() {
     Route::get('/register', fn() => 'register')->name('register');
     Route::get('/login', array(fn() => 'login', 'as' => 'login'));
@@ -29,3 +31,5 @@ Route::group(['prefix' => 'auth'], function() {
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
 });
+
+Route::middleware('userAuth')->get('tag/{id}', [TagController::class, 'show']);

@@ -13,7 +13,7 @@ class Tag extends Model
         'name',
     ];
 
-    public function posts() {
+    public function articles() {
         return $this->belongsToMany(Article::class);
     }
 }
