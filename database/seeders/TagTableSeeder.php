@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class TagTableSeeder extends Seeder
 {
@@ -14,10 +14,15 @@ class TagTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1; $i <4; $i++) {
-            $tag = new Tag;
-            $tag->name = 'tag:'.$i;
-            $tag->save();
+        $tags = array();
+        for ($i = 1; $i < 4; $i++) {
+            $tag = array();
+            $tag['id'] = $i;
+            $tag['name'] = 'tag:' . $i;
+            $tag['created_at'] = date('Y-m-d H:i:s');
+            $tag['updated_at'] = date('Y-m-d H:i:s');
+            array_push($tags, $tag);
         }
+        DB::table('tags')->insert($tags);
     }
 }
