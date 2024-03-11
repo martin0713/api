@@ -13,23 +13,40 @@ class TagController extends Controller
     {
         $this->service = $tagService;
     }
-
+    /**
+     * Display a listing of the resource.
+     * @param string $id
+     * @return \Illuminate\Http\Response
+     */
     public function show(string $id)
     {
         return $this->service->find($id);
     }
-
+    /**
+     * Display a listing of the resource
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         return $this->service->all();
     }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(TagStoreRequest $request)
     {
         $validated = $request->validated();
         return $this->service->create($validated);
     }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function update(TagStoreRequest $request)
     {
         $validated = $request->validated();

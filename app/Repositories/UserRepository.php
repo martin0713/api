@@ -11,24 +11,28 @@ class UserRepository
     {
         $this->model = $model;
     }
-
+    /**
+     * @param string $id
+     * @return User
+     */
     public function find(string $id)
     {
         return $this->model->find($id);
     }
-
+    /**
+     * @param array $validated
+     * @return User
+     */
     public function create(array $validated)
     {
         return $this->model->create($validated);
     }
-
+    /**
+     * @param string $mail
+     * @return User
+     */
     public function getUserByEmail(string $mail)
     {
         return $this->model->where('email', $mail)->first();
-    }
-
-    public function updateToken(User $user)
-    {
-        return $this->model->where('id', $user->id)->update(['remember_token' => $user->remember_token]);
     }
 };
