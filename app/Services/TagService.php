@@ -28,4 +28,12 @@ class TagService{
     public function create($validated) {
         return $this->repo->create($validated);
     }
+
+    public function update($validated) {
+        return $this->repo->update($validated);
+    }
+
+    public function delete($id) {
+        $this->repo->delete($id);
+    }
 };

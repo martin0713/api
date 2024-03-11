@@ -21,4 +21,12 @@ class TagRepository{
     public function create($validated) {
         return $this->model->create($validated);
     }
+
+    public function update($validated) {
+        return $this->model->find($validated['id'])->update($validated);
+    }
+
+    public function delete($id) {
+        return $this->model->find($id)->delete();
+    }
 };

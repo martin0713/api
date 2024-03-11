@@ -25,4 +25,15 @@ class TagController extends Controller
         $validated = $request->validated();
         return $this->service->create($validated);
     }
+
+    public function update(TagStoreRequest $request) {
+        $validated = $request->validated();
+        $validated['id'] = $request->route('id');
+        return $this->service->update($validated);
+    }
+
+    public function destroy(Request $request) {
+        $this->service->delete($request->route('id'));
+        return redirect('/api/tags');
+    }
 }
