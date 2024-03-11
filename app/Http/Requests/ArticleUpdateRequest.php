@@ -27,6 +27,7 @@ class ArticleUpdateRequest extends FormRequest
             'title' =>'required|string',
             'body' =>'required|string',
             'image' =>'required|string',
+            'tags' =>'required|array',
         ];
     }
 

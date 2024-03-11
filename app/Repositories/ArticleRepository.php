@@ -24,7 +24,8 @@ class ArticleRepository {
     }
 
     public function update($validated) {
-        return $this->model->find($validated['id'])->update($validated);
+        $this->model->find($validated['id'])->update($validated);
+        $this->model->find($validated['id'])->tags()->sync($validated['tags']);
     }
 
     public function delete($article) {
