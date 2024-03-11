@@ -13,4 +13,8 @@ class TagRepository{
     public function find(string $id) {
         return $this->model->find($id);
     }
+
+    public function all() {
+        return $this->model->cursor();
+    }
 };

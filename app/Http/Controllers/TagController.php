@@ -15,4 +15,8 @@ class TagController extends Controller
     public function show(string $id) {
         return $this->service->find($id);
     }
+
+    public function index() {
+        return $this->service->all();
+    }
 }

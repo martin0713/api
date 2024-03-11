@@ -33,3 +33,4 @@ Route::group(['prefix' => 'auth'], function() {
 });
 
 Route::middleware('userAuth')->get('tag/{id}', [TagController::class, 'show']);
+Route::middleware('userAuth')->get('tags', [TagController::class, 'index']);

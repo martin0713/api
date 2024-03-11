@@ -16,4 +16,12 @@ class TagService{
         $tag->articles;
         return new TagResource($tag);
     }
+
+    public function all() {
+        $tags = $this->repo->all();
+        foreach ($tags as $tag) {
+            $tag->articles;
+        }
+        return TagResource::collection($tags);
+    }
 };
