@@ -35,8 +35,6 @@ class ArticleService
     public function find(string $id)
     {
         $article = $this->repo->find($id);
-        $article->user;
-        $article->tags;
         return new ArticleResource($article);
     }
 

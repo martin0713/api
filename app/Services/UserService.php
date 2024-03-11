@@ -17,7 +17,6 @@ class UserService
     public function find(string $id)
     {
         $user = $this->repo->find($id);
-        $user->articles;
         return new UserResource($user);
     }
 
@@ -53,4 +52,4 @@ class UserService
         session()->invalidate();
         return redirect(route('login'));
     }
-};
+}

@@ -16,7 +16,6 @@ class TagService
     public function find(string $id)
     {
         $tag = $this->repo->find($id);
-        $tag->articles;
         return new TagResource($tag);
     }
 
@@ -43,4 +42,4 @@ class TagService
     {
         $this->repo->delete($id);
     }
-};
+}
