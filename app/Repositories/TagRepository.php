@@ -22,17 +22,17 @@ class TagRepository
         return $this->model->with('articles')->get();
     }
 
-    public function create($validated)
+    public function create(array $validated)
     {
         return $this->model->create($validated);
     }
 
-    public function update($validated)
+    public function update(array $validated)
     {
         return $this->model->find($validated['id'])->update($validated);
     }
 
-    public function delete($id)
+    public function delete(string $id)
     {
         return $this->model->find($id)->delete();
     }

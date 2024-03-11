@@ -17,17 +17,17 @@ class UserRepository
         return $this->model->find($id);
     }
 
-    public function create($validated)
+    public function create(array $validated)
     {
         return $this->model->create($validated);
     }
 
-    public function getUserByEmail($mail)
+    public function getUserByEmail(string $mail)
     {
         return $this->model->where('email', $mail)->first();
     }
 
-    public function updateToken($user)
+    public function updateToken(User $user)
     {
         return $this->model->where('id', $user->id)->update(['remember_token' => $user->remember_token]);
     }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\ArticleRepository;
 use App\Http\Resources\ArticleResource;
+use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -23,7 +24,7 @@ class ArticleService
         return ArticleResource::collection($articles);
     }
 
-    public function create($validated)
+    public function create(array $validated)
     {
         $validated['user_id'] = Auth::id();
         return $this->repo->create($validated);
@@ -35,7 +36,7 @@ class ArticleService
         return new ArticleResource($article);
     }
 
-    public function update($validated, $article)
+    public function update(array $validated, Article $article)
     {
         $records = $article->records;
         $records['time']++;
@@ -45,7 +46,7 @@ class ArticleService
         return $validated;
     }
 
-    public function delete($article)
+    public function delete(Article $article)
     {
         $this->repo->delete($article);
     }

@@ -25,17 +25,17 @@ class TagService
         return TagResource::collection($tags);
     }
 
-    public function create($validated)
+    public function create(array $validated)
     {
         return $this->repo->create($validated);
     }
 
-    public function update($validated)
+    public function update(array $validated)
     {
         return $this->repo->update($validated);
     }
 
-    public function delete($id)
+    public function delete(string $id)
     {
         $this->repo->delete($id);
     }

@@ -20,7 +20,7 @@ class UserService
         return new UserResource($user);
     }
 
-    public function create($validated)
+    public function create(array $validated)
     {
         $user = $this->repo->getUserByEmail($validated['email']);
         if (isset($user)) {
@@ -34,7 +34,7 @@ class UserService
         return new UserResource($user);
     }
 
-    public function login($validated)
+    public function login(array $validated)
     {
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             $user = Auth::user();

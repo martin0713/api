@@ -17,7 +17,7 @@ class ArticleRepository
         return $this->model->with('tags')->get();
     }
 
-    public function create($validated)
+    public function create(array $validated)
     {
         return $this->model->create($validated);
     }
@@ -28,13 +28,13 @@ class ArticleRepository
         return $article;
     }
 
-    public function update($validated)
+    public function update(array $validated)
     {
         $this->model->find($validated['id'])->update($validated);
         $this->model->find($validated['id'])->tags()->sync($validated['tags']);
     }
 
-    public function delete($article)
+    public function delete(Article $article)
     {
         return $this->model->find($article->id)->delete();
     }
