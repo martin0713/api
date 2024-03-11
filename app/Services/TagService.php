@@ -24,4 +24,8 @@ class TagService{
         }
         return TagResource::collection($tags);
     }
+
+    public function create($validated) {
+        return $this->repo->create($validated);
+    }
 };

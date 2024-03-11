@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\TagService;
+use App\Http\Requests\TagStoreRequest;
 
 class TagController extends Controller
 {
@@ -18,5 +19,10 @@ class TagController extends Controller
 
     public function index() {
         return $this->service->all();
+    }
+
+    public function store(TagStoreRequest $request) {
+        $validated = $request->validated();
+        return $this->service->create($validated);
     }
 }

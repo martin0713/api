@@ -17,4 +17,8 @@ class TagRepository{
     public function all() {
         return $this->model->cursor();
     }
+
+    public function create($validated) {
+        return $this->model->create($validated);
+    }
 };
