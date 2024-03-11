@@ -20,7 +20,6 @@ class ArticleRepository {
 
     public function find(string $id) {
         $article = $this->model->find($id);
-        $article->user;
         return $article;
     }
 
