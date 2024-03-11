@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
     private $service;
-    public function __construct(ArticleService $articleService) {
+    public function __construct(ArticleService $articleService)
+    {
         $this->service = $articleService;
     }
     /**
@@ -59,7 +60,7 @@ class ArticleController extends Controller
     {
         $user = Auth::user();
         if ($user->cant('update', $article)) {
-            return response()->json(['message'=> 'You don\'t have permission to update']);
+            return response()->json(['message' => 'You don\'t have permission to update']);
         }
         $validated = $request->validated();
         return $this->service->update($validated, $article);

@@ -44,8 +44,9 @@ class TagStoreRequest extends FormRequest
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return void
     **/
-    public function failedValidation(Validator $validator) { 
+    public function failedValidation(Validator $validator)
+    {
         //write your bussiness logic here otherwise it will give same old JSON response
-       throw new HttpResponseException(response()->json($validator->errors(), 400)); 
-   }
+        throw new HttpResponseException(response()->json($validator->errors(), 400));
+    }
 }

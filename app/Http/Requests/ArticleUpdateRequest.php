@@ -24,10 +24,10 @@ class ArticleUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' =>'required|string',
-            'body' =>'required|string',
-            'image' =>'required|string',
-            'tags' =>'required|array',
+            'title' => 'required|string',
+            'body' => 'required|string',
+            'image' => 'required|string',
+            'tags' => 'required|array',
         ];
     }
 

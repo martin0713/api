@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class ArticleService
 {
     private $repo;
-    public function __construct(ArticleRepository $repo) {
+    public function __construct(ArticleRepository $repo)
+    {
         $this->repo = $repo;
     }
 
-    public function all() {
+    public function all()
+    {
         $articles = $this->repo->all();
         foreach ($articles as $article) {
             $article->tags;
@@ -24,19 +26,22 @@ class ArticleService
         return ArticleResource::collection($articles);
     }
 
-    public function create($validated) {
+    public function create($validated)
+    {
         $validated['user_id'] = Auth::id();
         return $this->repo->create($validated);
     }
 
-    public function find(string $id) {
+    public function find(string $id)
+    {
         $article = $this->repo->find($id);
         $article->user;
         $article->tags;
         return new ArticleResource($article);
     }
 
-    public function update($validated, $article) {
+    public function update($validated, $article)
+    {
         $records = $article->records;
         $records['time']++;
         $validated['records'] = $records;
@@ -45,7 +50,8 @@ class ArticleService
         return $validated;
     }
 
-    public function delete($article) {
+    public function delete($article)
+    {
         $this->repo->delete($article);
     }
 }

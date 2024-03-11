@@ -6,19 +6,23 @@ use App\Repositories\UserRepository;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 
-class UserService{
+class UserService
+{
     private $repo;
-    public function __construct(UserRepository $repo) {
+    public function __construct(UserRepository $repo)
+    {
         $this->repo = $repo;
     }
 
-    public function find(string $id) {
+    public function find(string $id)
+    {
         $user = $this->repo->find($id);
         $user->articles;
         return new UserResource($user);
     }
 
-    public function create($validated) {
+    public function create($validated)
+    {
         $user = $this->repo->getUserByEmail($validated['email']);
         if (isset($user)) {
             return response()->json([ 'message' => 'User already exists'], 422);
@@ -31,7 +35,8 @@ class UserService{
         return new UserResource($user);
     }
 
-    public function login($validated) {
+    public function login($validated)
+    {
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             $user = Auth::user();
             $user->articles;
@@ -41,7 +46,8 @@ class UserService{
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         Auth::logout();
         session()->regenerateToken();
         session()->invalidate();
