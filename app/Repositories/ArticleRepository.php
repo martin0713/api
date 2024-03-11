@@ -14,7 +14,7 @@ class ArticleRepository
 
     public function all()
     {
-        return $this->model->cursor();
+        return $this->model->with('tags')->get();
     }
 
     public function create($validated)

@@ -19,7 +19,7 @@ class TagRepository
 
     public function all()
     {
-        return $this->model->cursor();
+        return $this->model->with('articles')->get();
     }
 
     public function create($validated)

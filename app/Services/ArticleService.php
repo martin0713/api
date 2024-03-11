@@ -20,9 +20,6 @@ class ArticleService
     public function all()
     {
         $articles = $this->repo->all();
-        foreach ($articles as $article) {
-            $article->tags;
-        }
         return ArticleResource::collection($articles);
     }
 
