@@ -32,5 +32,10 @@ Route::group(['prefix' => 'auth'], function() {
     Route::post('/logout', [UserController::class, 'logout']);
 });
 
-Route::middleware('userAuth')->get('tag/{id}', [TagController::class, 'show']);
-Route::middleware('userAuth')->get('tags', [TagController::class, 'index']);
+Route::controller(TagController::class)
+    ->middleware('userAuth')
+    ->prefix('tags')
+    ->group(function() {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+});
