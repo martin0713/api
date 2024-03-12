@@ -6,10 +6,8 @@ use App\Models\Tag;
 
 class TagRepository
 {
-    private Tag $model;
-    public function __construct(Tag $model)
+    public function __construct(private Tag $model)
     {
-        $this->model = $model;
     }
     /**
      * @param string $id

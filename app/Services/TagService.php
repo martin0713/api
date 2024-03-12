@@ -8,10 +8,8 @@ use App\Models\Tag;
 
 class TagService
 {
-    private TagRepository $repo;
-    public function __construct(TagRepository $repo)
+    public function __construct(private TagRepository $repo)
     {
-        $this->repo = $repo;
     }
 
     public function find(string $id): TagResource

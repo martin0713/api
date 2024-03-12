@@ -8,10 +8,8 @@ use App\Http\Requests\TagStoreRequest;
 
 class TagController extends Controller
 {
-    private TagService $service;
-    public function __construct(TagService $tagService)
+    public function __construct(private TagService $service)
     {
-        $this->service = $tagService;
     }
 
     public function show(string $id): \Illuminate\Http\Response

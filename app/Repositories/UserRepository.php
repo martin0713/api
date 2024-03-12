@@ -6,10 +6,8 @@ use App\Models\User;
 
 class UserRepository
 {
-    private User $model;
-    public function __construct(User $model)
+    public function __construct(private User $model)
     {
-        $this->model = $model;
     }
 
     public function find(string $id): User

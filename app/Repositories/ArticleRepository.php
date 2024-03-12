@@ -6,10 +6,8 @@ use App\Models\Article;
 
 class ArticleRepository
 {
-    private Article $model;
-    public function __construct(Article $model)
+    public function __construct(private Article $model)
     {
-        $this->model = $model;
     }
 
     public function all(): \Illuminate\Database\Eloquent\Collection

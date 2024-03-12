@@ -8,10 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
-    private UserRepository $repo;
-    public function __construct(UserRepository $repo)
+    public function __construct(private UserRepository $repo)
     {
-        $this->repo = $repo;
     }
 
     public function find(string $id): UserResource

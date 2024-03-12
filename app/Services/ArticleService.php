@@ -12,10 +12,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class ArticleService
 {
-    private ArticleRepository $repo;
-    public function __construct(ArticleRepository $repo)
+    public function __construct(private ArticleRepository $repo)
     {
-        $this->repo = $repo;
     }
 
     public function all(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

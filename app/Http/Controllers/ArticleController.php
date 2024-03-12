@@ -11,10 +11,8 @@ use App\Http\Resources\ArticleResource;
 
 class ArticleController extends Controller
 {
-    private ArticleService $service;
-    public function __construct(ArticleService $articleService)
+    public function __construct(private ArticleService $service)
     {
-        $this->service = $articleService;
     }
     /**
      * Display a listing of the resource.
