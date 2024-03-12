@@ -14,14 +14,14 @@ class TagTableSeeder extends Seeder
      */
     public function run()
     {
-        $tags = array();
+        $tags = [];
         for ($i = 1; $i < 4; $i++) {
-            $tag = array();
+            $tag = [];
             $tag['id'] = $i;
             $tag['name'] = 'tag:' . $i;
             $tag['created_at'] = date('Y-m-d H:i:s');
             $tag['updated_at'] = date('Y-m-d H:i:s');
-            array_push($tags, $tag);
+            $tags[] = $tag;
         }
         DB::table('tags')->insert($tags);
     }

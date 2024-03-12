@@ -14,16 +14,16 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = array();
+        $users = [];
         for ($i = 1; $i < 4; $i++) {
-            $user = array();
+            $user = [];
             $user['id'] = $i;
             $user['name'] = 'user' . $i;
             $user['email'] = "user$i@example.com";
             $user['password'] = bcrypt('<PASSWORD>');
             $user['created_at'] = date('Y-m-d H:i:s');
             $user['updated_at'] = date('Y-m-d H:i:s');
-            array_push($users, $user);
+            $users[] = $user;
         }
         DB::table('users')->insert($users);
     }
