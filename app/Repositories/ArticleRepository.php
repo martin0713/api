@@ -36,8 +36,9 @@ class ArticleRepository
      */
     public function update(array $validated): bool
     {
-        $result1 = $this->model->find($validated['id'])->update($validated);
-        $result2 = $this->model->find($validated['id'])->tags()->sync($validated['tags']);
+        $article = $this->model->find($validated['id']);
+        $result1 = $article->update($validated);
+        $result2 = $article->tags()->sync($validated['tags']);
         return $result1 && $result2;
     }
     /**
