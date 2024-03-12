@@ -8,6 +8,7 @@ use App\Http\Requests\ArticleUpdateRequest;
 use App\Services\ArticleService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\EmptyResource;
 
 class ArticleController extends Controller
 {
@@ -44,11 +45,13 @@ class ArticleController extends Controller
      * @param  string $id
      * @return \Illuminate\Http\Response
      */
-    public function show(string $id): \Illuminate\Http\Response
+    public function show(string $id): \Illuminate\Http\JsonResponse
     {
         $data = $this->service->find($id);
-        if ($data) return response(new ArticleResource($data));
-        else return response('Not Found', 404);
+        if ($data === null) {
+            return (new EmptyResource($data))->response();
+        }
+        return ArticleResource::make($data)->response();
     }
 
     /**

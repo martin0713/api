@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\TagService;
 use App\Http\Requests\TagStoreRequest;
 use App\Http\Resources\TagResource;
+use App\Http\Resources\EmptyResource;
 
 class TagController extends Controller
 {
@@ -13,11 +14,13 @@ class TagController extends Controller
     {
     }
 
-    public function show(string $id): \Illuminate\Http\Response
+    public function show(string $id): \Illuminate\Http\JsonResponse
     {
         $data = $this->service->find($id);
-        if ($data) return response(new TagResource($data));
-        else return response('Not Found', 404);
+        if ($data === null) {
+            return (new EmptyResource($data))->response();
+        }
+        return TagResource::make($data)->response();
     }
 
     public function index(): \Illuminate\Http\Response

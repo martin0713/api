@@ -6,6 +6,7 @@ use App\Services\UserService;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\EmptyResource;
 
 class UserController extends Controller
 {
@@ -17,11 +18,13 @@ class UserController extends Controller
      * @param string $id
      * @return \Illuminate\Http\Response
      */
-    public function show(string $id)
+    public function show(string $id): \Illuminate\Http\JsonResponse
     {
         $data = $this->service->find($id);
-        if ($data) return response(new UserResource($data));
-        else return response('Not Found', 404);
+        if ($data === null) {
+            return (new EmptyResource($data))->response();
+        }
+        return UserResource::make($data)->response();
     }
     /**
      * Store a newly created resource in storage.
