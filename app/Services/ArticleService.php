@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\ArticleRepository;
-use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,10 +15,9 @@ class ArticleService
     {
     }
 
-    public function all(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function all(): \Illuminate\Database\Eloquent\Collection
     {
-        $articles = $this->repo->all();
-        return ArticleResource::collection($articles);
+        return $this->repo->all();
     }
 
     public function create(array $validated): Article
@@ -28,10 +26,9 @@ class ArticleService
         return $this->repo->create($validated);
     }
 
-    public function find(string $id): ArticleResource
+    public function find(string $id): Article |null
     {
-        $article = $this->repo->find($id);
-        return new ArticleResource($article);
+        return $this->repo->find($id);
     }
 
     public function update(array $validated, Article $article): string

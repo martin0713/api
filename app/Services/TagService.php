@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\TagRepository;
-use App\Http\Resources\TagResource;
 use App\Models\Tag;
 
 class TagService
@@ -12,16 +11,14 @@ class TagService
     {
     }
 
-    public function find(string $id): TagResource
+    public function find(string $id): Tag |null
     {
-        $tag = $this->repo->find($id);
-        return new TagResource($tag);
+        return $this->repo->find($id);
     }
 
-    public function all(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function all(): \Illuminate\Database\Eloquent\Collection
     {
-        $tags = $this->repo->all();
-        return TagResource::collection($tags);
+        return $this->repo->all();
     }
 
     public function create(array $validated): Tag

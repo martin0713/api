@@ -13,7 +13,7 @@ class TagRepository
      * @param string $id
      * @return Tag
      */
-    public function find(string $id): Tag
+    public function find(string $id): Tag |null
     {
         return $this->model->find($id);
     }

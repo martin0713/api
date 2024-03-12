@@ -26,10 +26,9 @@ class ArticleRepository
      * @param string $id
      * @return Article
      */
-    public function find(string $id): Article
+    public function find(string $id): Article |null
     {
-        $article = $this->model->find($id);
-        return $article;
+        return $this->model->find($id);
     }
     /**
      * @param array $validated

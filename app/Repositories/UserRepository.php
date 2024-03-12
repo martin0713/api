@@ -10,7 +10,7 @@ class UserRepository
     {
     }
 
-    public function find(string $id): User
+    public function find(string $id): User |null
     {
         return $this->model->find($id);
     }
@@ -20,7 +20,7 @@ class UserRepository
         return $this->model->create($validated);
     }
 
-    public function getUserByEmail(string $mail): User|NULL
+    public function getUserByEmail(string $mail): User |null
     {
         return $this->model->where('email', $mail)->first();
     }

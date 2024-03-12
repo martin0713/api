@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\TagService;
 use App\Http\Requests\TagStoreRequest;
+use App\Http\Resources\TagResource;
 
 class TagController extends Controller
 {
@@ -15,13 +16,14 @@ class TagController extends Controller
     public function show(string $id): \Illuminate\Http\Response
     {
         $data = $this->service->find($id);
-        return response($data);
+        if ($data) return response(new TagResource($data));
+        else return response('Not Found', 404);
     }
 
     public function index(): \Illuminate\Http\Response
     {
         $data = $this->service->all();
-        return response($data);
+        return response(TagResource::collection($data));
     }
 
     public function store(TagStoreRequest $request): \Illuminate\Http\Response

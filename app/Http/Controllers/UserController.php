@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserLoginRequest;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -18,7 +19,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return $this->service->find($id);
+        $data = $this->service->find($id);
+        if ($data) return response(new UserResource($data));
+        else return response('Not Found', 404);
     }
     /**
      * Store a newly created resource in storage.
@@ -29,7 +32,8 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         $validated = $request->validated();
-        return $this->service->create($validated);
+        $data = $this->service->create($validated);
+        return response(new UserResource($data), 201);
     }
     /**
      * Store a newly created resource in storage.
@@ -40,7 +44,8 @@ class UserController extends Controller
     public function login(UserLoginRequest $request)
     {
         $validated = $request->validated();
-        return $this->service->login($validated);
+        $data = $this->service->login($validated);
+        return response(new UserResource($data), 201);
     }
     /**
      * Store a newly created resource in storage.

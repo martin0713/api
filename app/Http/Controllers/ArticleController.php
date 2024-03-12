@@ -21,7 +21,8 @@ class ArticleController extends Controller
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return $this->service->all();
+        $data = $this->service->all();
+        return ArticleResource::collection($data);
     }
 
     /**
@@ -46,7 +47,8 @@ class ArticleController extends Controller
     public function show(string $id): \Illuminate\Http\Response
     {
         $data = $this->service->find($id);
-        return response($data);
+        if ($data) return response(new ArticleResource($data));
+        else return response('Not Found', 404);
     }
 
     /**
