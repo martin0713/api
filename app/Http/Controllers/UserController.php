@@ -10,7 +10,7 @@ use App\Http\Resources\EmptyResource;
 
 class UserController extends Controller
 {
-    public function __construct(private UserService $service)
+    public function __construct(private readonly UserService $service)
     {
     }
     /**

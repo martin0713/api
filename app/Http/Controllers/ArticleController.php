@@ -12,7 +12,7 @@ use App\Http\Resources\EmptyResource;
 
 class ArticleController extends Controller
 {
-    public function __construct(private ArticleService $service)
+    public function __construct(private readonly ArticleService $service)
     {
     }
     /**

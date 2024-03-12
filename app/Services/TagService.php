@@ -7,7 +7,7 @@ use App\Models\Tag;
 
 class TagService
 {
-    public function __construct(private TagRepository $repo)
+    public function __construct(private readonly TagRepository $repo)
     {
     }
 

@@ -6,7 +6,7 @@ use App\Models\Article;
 
 class ArticleRepository
 {
-    public function __construct(private Article $model)
+    public function __construct(private readonly Article $model)
     {
     }
 

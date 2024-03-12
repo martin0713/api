@@ -10,7 +10,7 @@ use App\Http\Resources\EmptyResource;
 
 class TagController extends Controller
 {
-    public function __construct(private TagService $service)
+    public function __construct(private readonly TagService $service)
     {
     }
 

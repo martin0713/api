@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserService
 {
-    public function __construct(private UserRepository $repo)
+    public function __construct(private readonly UserRepository $repo)
     {
     }
 
@@ -36,7 +36,6 @@ class UserService
     {
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             $user = Auth::user();
-            $user->articles;
             return $user;
         } else {
             throw new HttpResponseException(response()->json(['message' => 'Invalid credentials'], 422));

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class ArticleService
 {
-    public function __construct(private ArticleRepository $repo)
+    public function __construct(private readonly ArticleRepository $repo)
     {
     }
 

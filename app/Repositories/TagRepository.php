@@ -6,7 +6,7 @@ use App\Models\Tag;
 
 class TagRepository
 {
-    public function __construct(private Tag $model)
+    public function __construct(private readonly Tag $model)
     {
     }
     /**
