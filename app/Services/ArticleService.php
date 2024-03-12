@@ -12,42 +12,45 @@ use Illuminate\Support\Facades\Auth;
  */
 class ArticleService
 {
-    private $repo;
+    private ArticleRepository $repo;
     public function __construct(ArticleRepository $repo)
     {
         $this->repo = $repo;
     }
 
-    public function all()
+    public function all(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $articles = $this->repo->all();
         return ArticleResource::collection($articles);
     }
 
-    public function create(array $validated)
+    public function create(array $validated): Article
     {
         $validated['user_id'] = Auth::id();
         return $this->repo->create($validated);
     }
 
-    public function find(string $id)
+    public function find(string $id): ArticleResource
     {
         $article = $this->repo->find($id);
         return new ArticleResource($article);
     }
 
-    public function update(array $validated, Article $article)
+    public function update(array $validated, Article $article): string
     {
         $records = $article->records;
         $records['time']++;
         $validated['records'] = $records;
         $validated['id'] = $article->id;
-        $this->repo->update($validated);
-        return $validated;
+        $isSucceed = $this->repo->update($validated);
+        if ($isSucceed) return 'success';
+        else return 'fail';
     }
 
-    public function delete(Article $article)
+    public function delete(Article $article): string
     {
-        $this->repo->delete($article);
+        $isSucceed = $this->repo->delete($article);
+        if ($isSucceed) return 'success';
+        else return 'fail';
     }
 }

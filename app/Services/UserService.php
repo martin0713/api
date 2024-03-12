@@ -8,23 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
-    private $repo;
+    private UserRepository $repo;
     public function __construct(UserRepository $repo)
     {
         $this->repo = $repo;
     }
 
-    public function find(string $id)
+    public function find(string $id): UserResource
     {
         $user = $this->repo->find($id);
         return new UserResource($user);
     }
 
-    public function create(array $validated)
+    public function create(array $validated): \Illuminate\Http\JsonResponse|UserResource
     {
         $user = $this->repo->getUserByEmail($validated['email']);
         if (isset($user)) {
-            return response()->json([ 'message' => 'User already exists'], 422);
+            return response()->json(['message' => 'User already exists'], 422);
         }
 
         $validated['password'] = password_hash($validated['password'], PASSWORD_BCRYPT);
@@ -34,7 +34,7 @@ class UserService
         return new UserResource($user);
     }
 
-    public function login(array $validated)
+    public function login(array $validated): \Illuminate\Http\JsonResponse|UserResource
     {
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             $user = Auth::user();
@@ -45,7 +45,7 @@ class UserService
         }
     }
 
-    public function logout()
+    public function logout(): \Illuminate\Http\RedirectResponse
     {
         Auth::logout();
         session()->regenerateToken();

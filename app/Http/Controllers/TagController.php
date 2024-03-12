@@ -8,53 +8,40 @@ use App\Http\Requests\TagStoreRequest;
 
 class TagController extends Controller
 {
-    private $service;
+    private TagService $service;
     public function __construct(TagService $tagService)
     {
         $this->service = $tagService;
     }
-    /**
-     * Display a listing of the resource.
-     * @param string $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(string $id)
+
+    public function show(string $id): \Illuminate\Http\Response
     {
-        return $this->service->find($id);
+        $data = $this->service->find($id);
+        return response($data);
     }
-    /**
-     * Display a listing of the resource
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(): \Illuminate\Http\Response
     {
-        return $this->service->all();
+        $data = $this->service->all();
+        return response($data);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(TagStoreRequest $request)
+
+    public function store(TagStoreRequest $request): \Illuminate\Http\Response
     {
         $validated = $request->validated();
-        return $this->service->create($validated);
+        $data = $this->service->create($validated);
+        return response($data);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(TagStoreRequest $request)
+
+    public function update(TagStoreRequest $request): \Illuminate\Http\Response
     {
         $validated = $request->validated();
         $validated['id'] = $request->route('id');
-        return $this->service->update($validated);
+        $result = $this->service->update($validated);
+        return response($result);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->service->delete($request->route('id'));
         return redirect('/api/tags');

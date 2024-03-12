@@ -8,7 +8,7 @@ use App\Http\Requests\UserLoginRequest;
 
 class UserController extends Controller
 {
-    private $service;
+    private UserService $service;
     public function __construct(UserService $userService)
     {
         $this->service = $userService;

@@ -4,39 +4,44 @@ namespace App\Services;
 
 use App\Repositories\TagRepository;
 use App\Http\Resources\TagResource;
+use App\Models\Tag;
 
 class TagService
 {
-    private $repo;
+    private TagRepository $repo;
     public function __construct(TagRepository $repo)
     {
         $this->repo = $repo;
     }
 
-    public function find(string $id)
+    public function find(string $id): TagResource
     {
         $tag = $this->repo->find($id);
         return new TagResource($tag);
     }
 
-    public function all()
+    public function all(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $tags = $this->repo->all();
         return TagResource::collection($tags);
     }
 
-    public function create(array $validated)
+    public function create(array $validated): Tag
     {
         return $this->repo->create($validated);
     }
 
-    public function update(array $validated)
+    public function update(array $validated): string
     {
-        return $this->repo->update($validated);
+        $result = $this->repo->update($validated);
+        if ($result) return 'success';
+        else return 'fail';
     }
 
-    public function delete(string $id)
+    public function delete(string $id): string
     {
-        $this->repo->delete($id);
+        $result = $this->repo->delete($id);
+        if ($result) return 'success';
+        else return 'fail';
     }
 }
