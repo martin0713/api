@@ -21,12 +21,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('userAuth')->resource('articles', ArticleController::class, ['only' => ['index','store', 'show', 'update', 'destroy']]);
-Route::middleware('userAuth')->get('/user/{id}', [UserController::class, 'show']);
+Route::middleware('userAuth')->resource('articles', ArticleController::class, ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+Route::middleware('userAuth')->resource('users', UserController::class, ['only' => ['show', 'update']]);
 
-Route::group(['prefix' => 'auth'], function() {
-    Route::get('/register', fn() => 'register')->name('register');
-    Route::get('/login', array(fn() => 'login', 'as' => 'login'));
+Route::group(['prefix' => 'auth'], function () {
+    Route::get('/register', fn () => 'register')->name('register');
+    Route::get('/login', array(fn () => 'login', 'as' => 'login'));
     Route::post('/register', [UserController::class, 'store']);
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
@@ -35,10 +35,10 @@ Route::group(['prefix' => 'auth'], function() {
 Route::controller(TagController::class)
     ->middleware('userAuth')
     ->prefix('tags')
-    ->group(function() {
+    ->group(function () {
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
-});
+    });

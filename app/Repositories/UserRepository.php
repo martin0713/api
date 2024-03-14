@@ -24,4 +24,9 @@ class UserRepository
     {
         return $this->model->where('email', $mail)->first();
     }
+
+    public function update(array $validated, string $id): int
+    {
+        return $this->model->find($id)->update($validated);
+    }
 }
