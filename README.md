@@ -31,9 +31,17 @@ php artisan serve
 
 #### User :
 
-`GET {{url}}/api/user/{id}`
+`GET {{url}}/api/users/{id}`
 
 -   取得使用者資訊，包含使用者的文章
+
+`PUT {{url}}/api/users/{id}`
+
+-   更新使用者
+
+`DELETE {{url}}/api/users/{id}`
+
+-   刪除使用者
 
 #### Articles :
 
