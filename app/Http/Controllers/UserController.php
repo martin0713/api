@@ -53,4 +53,13 @@ class UserController extends Controller
         $data = $this->service->update($validated, $id);
         return response(new UserResource($data), 201);
     }
+
+    public function destroy(string $id): \Illuminate\Http\JsonResponse
+    {
+        $result = $this->service->delete($id);
+        if ($result) {
+            return response()->json(['message' => 'User deleted']);
+        }
+        return response()->json(['message' => 'Fail to delete']);
+    }
 }

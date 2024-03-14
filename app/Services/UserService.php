@@ -63,4 +63,15 @@ class UserService
         }
         throw new HttpResponseException(response()->json(['message' => 'Fail to update']));
     }
+
+    public function delete(string $id): string
+    {
+        $userId = Auth::id();
+        if ($userId != $id) {
+            throw new HttpResponseException(response()->json(['message' => "You don't have permission to delete. User(user id:$userId) can't delete user$id."], 422));
+        }
+        $result = $this->repo->delete($id);
+        if ($result) return true;
+        return false;
+    }
 }

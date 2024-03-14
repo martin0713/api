@@ -29,4 +29,9 @@ class UserRepository
     {
         return $this->model->find($id)->update($validated);
     }
+
+    public function delete(string $id): int
+    {
+        return $this->model->find($id)->delete();
+    }
 }

@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('userAuth')->resource('articles', ArticleController::class, ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
-Route::middleware('userAuth')->resource('users', UserController::class, ['only' => ['show', 'update']]);
+Route::middleware('userAuth')->resource('users', UserController::class, ['only' => ['show', 'update', 'destroy']]);
 
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/register', fn () => 'register')->name('register');

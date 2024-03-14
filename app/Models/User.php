@@ -48,4 +48,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
+
+    protected static function booted()
+    {
+        static::deleting(function (User $user) {
+            $user->articles()->each(function (Article $article) {
+                $article->tags()->detach();
+                $article->delete();
+            });
+        });
+    }
 }
