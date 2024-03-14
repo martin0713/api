@@ -39,7 +39,7 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $data = $this->service->login($validated);
-        return response(new UserResource($data), 201);
+        return response(new UserResource($data));
     }
 
     public function logout(): \Illuminate\Http\RedirectResponse
@@ -51,7 +51,7 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $data = $this->service->update($validated, $id);
-        return response(new UserResource($data), 201);
+        return response(new UserResource($data));
     }
 
     public function destroy(string $id): \Illuminate\Http\JsonResponse
