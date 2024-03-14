@@ -38,14 +38,12 @@ class ArticleService
         $validated['records'] = $records;
         $validated['id'] = $article->id;
         $isSucceed = $this->repo->update($validated);
-        if ($isSucceed) return 'success';
-        else return 'fail';
+        return $isSucceed ? 'success' : 'fail';
     }
 
     public function delete(Article $article): string
     {
         $isSucceed = $this->repo->delete($article);
-        if ($isSucceed) return 'success';
-        else return 'fail';
+        return $isSucceed ? 'success' : 'fail';
     }
 }

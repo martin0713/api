@@ -29,14 +29,12 @@ class TagService
     public function update(array $validated): string
     {
         $result = $this->repo->update($validated);
-        if ($result) return 'success';
-        else return 'fail';
+        return $result ? 'success' : 'fail';
     }
 
     public function delete(string $id): string
     {
         $result = $this->repo->delete($id);
-        if ($result) return 'success';
-        else return 'fail';
+        return $result ? 'success' : 'fail';
     }
 }

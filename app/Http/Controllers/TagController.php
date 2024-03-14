@@ -44,9 +44,9 @@ class TagController extends Controller
         return response($result);
     }
 
-    public function destroy(Request $request): \Illuminate\Http\RedirectResponse
+    public function destroy(Request $request): \Illuminate\Http\Response
     {
-        $this->service->delete($request->route('id'));
-        return redirect('/api/tags');
+        $result = $this->service->delete($request->route('id'));
+        return response($result);
     }
 }

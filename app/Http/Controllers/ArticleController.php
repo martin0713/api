@@ -78,13 +78,13 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function destroy(Article $article): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    public function destroy(Article $article): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user();
         if ($user->cant('delete', $article)) {
             return response()->json(['message' => 'You don\'t have permission to delete']);
         }
-        $this->service->delete($article);
-        return redirect(route('articles.index'));
+        $result = $this->service->delete($article);
+        return response()->json(['message' => $result]);
     }
 }
