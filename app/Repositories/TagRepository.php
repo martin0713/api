@@ -46,6 +46,9 @@ class TagRepository
      */
     public function delete(string $id): bool
     {
-        return $this->model->find($id)->delete();
+        $tag = $this->model->find($id);
+        $result1 = $tag->articles()->detach();
+        $result2 = $tag->delete();
+        return $result1 && $result2;
     }
 };

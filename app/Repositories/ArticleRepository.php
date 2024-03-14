@@ -47,6 +47,9 @@ class ArticleRepository
      */
     public function delete(Article $article): bool
     {
-        return $this->model->find($article->id)->delete();
+        $article = $this->model->find($article->id);
+        $result1 = $article->tags()->detach();
+        $result2 = $article->delete();
+        return $result1 && $result2;
     }
 }
