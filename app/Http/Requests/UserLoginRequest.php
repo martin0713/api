@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserLoginRequest extends FormRequest
 {
@@ -29,5 +31,19 @@ class UserLoginRequest extends FormRequest
         ];
     }
 
-    protected $redirect = '/api/auth/login';
+    public function messages()
+    {
+        return [
+            'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'password.required' => 'The password field is required.',
+            'password.string' => 'The password must be a string.',
+        ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        //write your bussiness logic here otherwise it will give same old JSON response
+        throw new HttpResponseException(response()->json($validator->errors(), 400));
+    }
 }
