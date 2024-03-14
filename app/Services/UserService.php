@@ -6,6 +6,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Redis;
 
 class UserService
 {
@@ -15,7 +16,17 @@ class UserService
 
     public function find(string $id): User |null
     {
-        return $this->repo->find($id);
+        $user = Redis::get("user:$id");
+        if ($user === null) {
+            $user = $this->repo->find($id);
+            if ($user === null) {
+                throw new HttpResponseException(response()->json(['message' => 'User not found'], 404));
+            }
+            Redis::set("user:$id", serialize($user));
+            return $user;
+        }
+        $user = unserialize($user);
+        return $user;
     }
 
     public function create(array $validated): \Illuminate\Http\JsonResponse |User
@@ -28,6 +39,7 @@ class UserService
         $validated['password'] = password_hash($validated['password'], PASSWORD_BCRYPT);
         $user = $this->repo->create($validated);
         Auth::login($user);
+        Redis::set("user:$user->id", serialize($user));
         return $user;
     }
 
@@ -35,6 +47,7 @@ class UserService
     {
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             $user = Auth::user();
+            Redis::set("user:$user->id", serialize($user));
             return $user;
         } else {
             throw new HttpResponseException(response()->json(['message' => 'Invalid credentials'], 422));
@@ -59,6 +72,7 @@ class UserService
         if ($result) {
             $user = Auth::user()->refresh();
             Auth::login($user);
+            Redis::set("user:$user->id", serialize($user));
             return $user;
         }
         throw new HttpResponseException(response()->json(['message' => 'Fail to update']));
@@ -71,7 +85,10 @@ class UserService
             throw new HttpResponseException(response()->json(['message' => "You don't have permission to delete. User(user id:$userId) can't delete user$id."], 422));
         }
         $result = $this->repo->delete($id);
-        if ($result) return true;
+        if ($result) {
+            Redis::del("user:$userId");
+            return true;
+        }
         return false;
     }
 }
