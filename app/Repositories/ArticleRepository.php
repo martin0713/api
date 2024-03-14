@@ -12,7 +12,7 @@ class ArticleRepository
 
     public function all(): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->model->with('tags')->get();
+        return $this->model->with('user')->with('tags')->get();
     }
     /**
      * @param array $validated
@@ -28,7 +28,7 @@ class ArticleRepository
      */
     public function find(string $id): Article |null
     {
-        return $this->model->find($id);
+        return $this->model->with('user')->with('tags')->find($id);
     }
     /**
      * @param array $validated

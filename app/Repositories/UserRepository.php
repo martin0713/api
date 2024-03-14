@@ -12,7 +12,7 @@ class UserRepository
 
     public function find(string $id): User |null
     {
-        return $this->model->find($id);
+        return $this->model::with(['articles.tags'])->find($id);
     }
 
     public function create(array $validated): User

@@ -15,14 +15,14 @@ class TagRepository
      */
     public function find(string $id): Tag |null
     {
-        return $this->model->find($id);
+        return $this->model->with('articles.user')->find($id);
     }
     /**
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all(): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->model->with('articles')->get();
+        return $this->model->with('articles.user')->get();
     }
     /**
      * @param array $validated
