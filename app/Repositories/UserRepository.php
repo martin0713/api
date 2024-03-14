@@ -4,25 +4,24 @@ namespace App\Repositories;
 
 use App\Models\User;
 
-class UserRepository{
-    private $model;
-    public function __construct(User $model) {
-        $this->model = $model;
+class UserRepository
+{
+    public function __construct(private readonly User $model)
+    {
     }
 
-    public function find(string $id) {
+    public function find(string $id): User |null
+    {
         return $this->model->find($id);
     }
 
-    public function create($validated) {
+    public function create(array $validated): User
+    {
         return $this->model->create($validated);
     }
 
-    public function getUserByEmail($mail) {
+    public function getUserByEmail(string $mail): User |null
+    {
         return $this->model->where('email', $mail)->first();
     }
-
-    public function updateToken($user) {
-        return $this->model->where('id', $user->id)->update(['remember_token' => $user->remember_token]);
-    }
-};
+}

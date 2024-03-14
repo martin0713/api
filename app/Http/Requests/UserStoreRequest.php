@@ -24,8 +24,8 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' =>'required|min:3|max:20',
-            'email' =>'required|email',
+            'name' => 'required|min:3|max:20',
+            'email' => 'required|email',
             'password' => 'required|string',
         ];
     }

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Article;
+use Illuminate\Support\Facades\DB;
 
 class ArticleTableSeeder extends Seeder
 {
@@ -14,14 +14,19 @@ class ArticleTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1; $i <= 10; $i++){
-            $article = new Article;
-            $article->title = 'article'.$i;
-            $article->body = uniqid();
-            $article->records = array('time' => 1);
-            $article->user_id = rand(1,3);
-            $article->image = uniqid();
-            $article->save();
+        $articles = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $article = [];
+            $article['id'] = $i;
+            $article['title'] = 'article' . $i;
+            $article['body'] = uniqid();
+            $article['records'] = json_encode(array('time' => 1));
+            $article['user_id'] = rand(1, 3);
+            $article['image'] = uniqid();
+            $article['created_at'] = date('Y-m-d H:i:s');
+            $article['updated_at'] = date('Y-m-d H:i:s');
+            $articles[] = $article;
         }
+        DB::table('articles')->insert($articles);
     }
 }

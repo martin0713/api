@@ -24,10 +24,10 @@ class ArticleStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' =>'required|string',
-            'body' =>'required|string',
-            'image' =>'required|string',
-            'records.time' =>'required|integer'
+            'title' => 'required|string',
+            'body' => 'required|string',
+            'image' => 'required|string',
+            'records.time' => 'required|integer'
         ];
     }
     public function messages()

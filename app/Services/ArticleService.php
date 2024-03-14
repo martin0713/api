@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\ArticleRepository;
-use App\Http\Resources\ArticleResource;
+use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -11,36 +11,41 @@ use Illuminate\Support\Facades\Auth;
  */
 class ArticleService
 {
-    private $repo;
-    public function __construct(ArticleRepository $repo) {
-        $this->repo = $repo;
+    public function __construct(private readonly ArticleRepository $repo)
+    {
     }
 
-    public function all() {
-        $articles = $this->repo->all();
-        return ArticleResource::collection($articles);
+    public function all(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->repo->all();
     }
 
-    public function create($validated) {
+    public function create(array $validated): Article
+    {
         $validated['user_id'] = Auth::id();
         return $this->repo->create($validated);
     }
 
-    public function find(string $id) {
-        $article = $this->repo->find($id);
-        return new ArticleResource($article);
+    public function find(string $id): Article |null
+    {
+        return $this->repo->find($id);
     }
 
-    public function update($validated, $article) {
+    public function update(array $validated, Article $article): string
+    {
         $records = $article->records;
         $records['time']++;
         $validated['records'] = $records;
         $validated['id'] = $article->id;
-        $this->repo->update($validated);
-        return $validated;
+        $isSucceed = $this->repo->update($validated);
+        if ($isSucceed) return 'success';
+        else return 'fail';
     }
 
-    public function delete($article) {
-        $this->repo->delete($article);
+    public function delete(Article $article): string
+    {
+        $isSucceed = $this->repo->delete($article);
+        if ($isSucceed) return 'success';
+        else return 'fail';
     }
 }

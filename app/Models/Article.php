@@ -10,6 +10,7 @@ class Article extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = [
         'title',
         'body',
@@ -22,7 +23,13 @@ class Article extends Model
         'records' => 'array',
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }
