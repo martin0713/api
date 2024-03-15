@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
-use App\Repositories\RedisRepository;
+use App\Repositories\CacheRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -13,19 +13,19 @@ class UserService
 
     public function __construct(
         private readonly UserRepository $userRepo,
-        private readonly RedisRepository $redisRepo
+        private readonly CacheRepository $cacheRepo
     ) {
     }
 
     public function find(string $id): User |null
     {
-        $user = $this->redisRepo->getUser($id);
+        $user = $this->cacheRepo->getUser($id);
         if ($user === null) {
             $user = $this->userRepo->find($id);
             if ($user === null) {
                 throw new HttpResponseException(response()->json(['message' => 'User not found'], 404));
             }
-            $this->redisRepo->setUser($id, $user);
+            $this->cacheRepo->setUser($id, $user);
             return $user;
         }
         return unserialize($user);
@@ -41,7 +41,7 @@ class UserService
         $validated['password'] = password_hash($validated['password'], PASSWORD_BCRYPT);
         $user = $this->userRepo->create($validated);
         Auth::login($user);
-        $this->redisRepo->setUser($user->id, $user);
+        $this->cacheRepo->setUser($user->id, $user);
         return $user;
     }
 
@@ -49,7 +49,7 @@ class UserService
     {
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             $user = Auth::user();
-            $this->redisRepo->setUser($user->id, $user);
+            $this->cacheRepo->setUser($user->id, $user);
             return $user;
         } else {
             throw new HttpResponseException(response()->json(['message' => 'Invalid credentials'], 422));
@@ -70,7 +70,7 @@ class UserService
         if ($result) {
             $user = Auth::user()->refresh();
             Auth::login($user);
-            $this->redisRepo->setUser($userId, $user);
+            $this->cacheRepo->setUser($userId, $user);
             return $user;
         }
         throw new HttpResponseException(response()->json(['message' => 'Fail to update']));
@@ -80,7 +80,7 @@ class UserService
     {
         $result = $this->userRepo->delete($userId);
         if ($result) {
-            $this->redisRepo->deleteUser($userId);
+            $this->cacheRepo->deleteUser($userId);
             return true;
         }
         return false;
