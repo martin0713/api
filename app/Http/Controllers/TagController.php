@@ -41,12 +41,18 @@ class TagController extends Controller
         $validated = $request->validated();
         $validated['id'] = $request->route('id');
         $result = $this->service->update($validated);
-        return response($result);
+        if ($result) {
+            return response('success');
+        }
+        return response('fail');
     }
 
     public function destroy(Request $request): \Illuminate\Http\Response
     {
         $result = $this->service->delete($request->route('id'));
-        return response($result);
+        if ($result) {
+            return response('success');
+        }
+        return response('fail');
     }
 }

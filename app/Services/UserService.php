@@ -76,7 +76,7 @@ class UserService
         throw new HttpResponseException(response()->json(['message' => 'Fail to update']));
     }
 
-    public function delete(string $userId): string
+    public function delete(string $userId): bool
     {
         $result = $this->userRepo->delete($userId);
         if ($result) {

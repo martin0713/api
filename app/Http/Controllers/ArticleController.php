@@ -69,7 +69,10 @@ class ArticleController extends Controller
         }
         $validated = $request->validated();
         $result = $this->service->update($validated, $article);
-        return response()->json(['message' => $result]);
+        if ($result) {
+            return response()->json(['message' => 'Article updated']);
+        }
+        return response()->json(['message' => 'Fail to update']);
     }
 
     /**
@@ -85,6 +88,9 @@ class ArticleController extends Controller
             return response()->json(['message' => 'You don\'t have permission to delete']);
         }
         $result = $this->service->delete($article);
-        return response()->json(['message' => $result]);
+        if ($result) {
+            return response()->json(['message' => 'Article deleted']);
+        }
+        return response()->json(['message' => 'Fail to delete']);
     }
 }
