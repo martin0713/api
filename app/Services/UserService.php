@@ -21,14 +21,10 @@ class UserService
     {
         $user = $this->cacheRepo->getUser($id);
         if ($user === null) {
-            $user = $this->userRepo->find($id);
-            if ($user === null) {
-                throw new HttpResponseException(response()->json(['message' => 'User not found'], 404));
-            }
-            $this->cacheRepo->setUser($id, $user);
+            $user = $this->cacheRepo->rememberUser($id);
             return $user;
         }
-        return unserialize($user);
+        return $user;
     }
 
     public function create(array $validated): \Illuminate\Http\JsonResponse |User
