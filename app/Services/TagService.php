@@ -33,6 +33,7 @@ class TagService
 
     public function delete(string $id): bool
     {
-        return $this->repo->delete($id);
+        $this->repo->delete($id);
+        return true;
     }
 }

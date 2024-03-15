@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Article;
+use Illuminate\Support\Facades\DB;
 
 class ArticleRepository
 {
@@ -34,22 +35,24 @@ class ArticleRepository
      * @param array $validated
      * @return boolean
      */
-    public function update(array $validated): bool
+    public function update(array $validated): void
     {
-        $article = $this->model->find($validated['id']);
-        $result1 = $article->update($validated);
-        $result2 = $article->tags()->sync($validated['tags']);
-        return $result1 && $result2;
+        DB::transaction(function () use ($validated) {
+            $article = $this->model->find($validated['id']);
+            $article->update($validated);
+            $article->tags()->sync($validated['tags']);
+        }, 3);
     }
     /**
      * @param array $validated
      * @return boolean
      */
-    public function delete(Article $article): bool
+    public function delete(Article $article): void
     {
-        $article = $this->model->find($article->id);
-        $result1 = $article->tags()->detach();
-        $result2 = $article->delete();
-        return $result1 && $result2;
+        DB::transaction(function () use ($article) {
+            $article = $this->model->find($article->id);
+            $article->tags()->detach();
+            $article->delete();
+        }, 3);
     }
 }

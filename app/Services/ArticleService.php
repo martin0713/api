@@ -37,11 +37,13 @@ class ArticleService
         $records['time']++;
         $validated['records'] = $records;
         $validated['id'] = $article->id;
-        return $this->repo->update($validated);
+        $this->repo->update($validated);
+        return true;
     }
 
     public function delete(Article $article): bool
     {
-        return $this->repo->delete($article);
+        $this->repo->delete($article);
+        return true;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class TagRepository
 {
@@ -44,11 +45,12 @@ class TagRepository
      * @param string $id
      * @return boolean
      */
-    public function delete(string $id): bool
+    public function delete(string $id): void
     {
-        $tag = $this->model->find($id);
-        $result1 = $tag->articles()->detach();
-        $result2 = $tag->delete();
-        return $result1 && $result2;
+        DB::transaction(function () use ($id) {
+            $tag = $this->model->find($id);
+            $tag->articles()->detach();
+            $tag->delete();
+        });
     }
 };
