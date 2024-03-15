@@ -62,29 +62,21 @@ class UserService
         return redirect(route('login'));
     }
 
-    public function update(array $validated, string $id): \Illuminate\Http\JsonResponse |User
+    public function update(array $validated, string $userId): \Illuminate\Http\JsonResponse |User
     {
-        $userId = Auth::id();
-        if ($userId != $id) {
-            throw new HttpResponseException(response()->json(['message' => "You don't have permission to update. User(user id:$userId) can't update user$id."], 422));
-        }
-        $result = $this->repo->update($validated, $id);
+        $result = $this->repo->update($validated, $userId);
         if ($result) {
             $user = Auth::user()->refresh();
             Auth::login($user);
-            Redis::set("user:$user->id", serialize($user));
+            Redis::set("user:$userId", serialize($user));
             return $user;
         }
         throw new HttpResponseException(response()->json(['message' => 'Fail to update']));
     }
 
-    public function delete(string $id): string
+    public function delete(string $userId): string
     {
-        $userId = Auth::id();
-        if ($userId != $id) {
-            throw new HttpResponseException(response()->json(['message' => "You don't have permission to delete. User(user id:$userId) can't delete user$id."], 422));
-        }
-        $result = $this->repo->delete($id);
+        $result = $this->repo->delete($userId);
         if ($result) {
             Redis::del("user:$userId");
             return true;

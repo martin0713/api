@@ -8,6 +8,8 @@ use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\EmptyResource;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -47,16 +49,20 @@ class UserController extends Controller
         return $this->service->logout();
     }
 
-    public function update(UserUpdateRequest $request, string $id): \Illuminate\Http\Response
+    public function update(UserUpdateRequest $request): \Illuminate\Http\Response
     {
+        $userId = $request->route('userId');
+        Gate::authorize('update-user', $userId);
         $validated = $request->validated();
-        $data = $this->service->update($validated, $id);
+        $data = $this->service->update($validated, $userId);
         return response(new UserResource($data));
     }
 
-    public function destroy(string $id): \Illuminate\Http\JsonResponse
+    public function destroy(Request $request): \Illuminate\Http\JsonResponse
     {
-        $result = $this->service->delete($id);
+        $userId = $request->route('userId');
+        Gate::authorize('delete-user', $userId);
+        $result = $this->service->delete($userId);
         if ($result) {
             return response()->json(['message' => 'User deleted']);
         }
