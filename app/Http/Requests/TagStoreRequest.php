@@ -26,7 +26,7 @@ class TagStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:tags',
+            'name' => 'required|string|unique:tags,name,' . $this->id,
         ];
     }
 
@@ -43,7 +43,7 @@ class TagStoreRequest extends FormRequest
      *
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return void
-    **/
+     **/
     public function failedValidation(Validator $validator)
     {
         //write your bussiness logic here otherwise it will give same old JSON response
