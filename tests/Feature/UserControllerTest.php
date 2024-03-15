@@ -13,11 +13,13 @@ class UserControllerTest extends TestCase
 
     public function testRegister()
     {
+        // Act
         $response = $this->post('api/auth/register', [
             'name' => 'test',
             'email' => 'test@example.com',
             'password' => '<PASSWORD>',
         ]);
+        // Assert
         $this->assertDatabaseHas('users', [
             'name' => 'test',
             'email' => 'test@example.com',
@@ -28,40 +30,48 @@ class UserControllerTest extends TestCase
 
     public function testLogin()
     {
+        // Arrange
         $user = new User();
         $user->name = 'test';
         $user->email = 'test@example.com';
         $user->password = password_hash('<PASSWORD>', PASSWORD_BCRYPT);
         $user->save();
-
+        // Act
         $response = $this->post('api/auth/login', [
             'name' => 'test',
             'email' => 'test@example.com',
             'password' => '<PASSWORD>',
         ]);
+        // Assert
         $response->assertOk();
         $this->assertAuthenticated();
     }
 
     public function testLogout()
     {
+        // Arrange
         $this->post('api/auth/login', [
             'name' => 'test',
             'email' => 'test@example.com',
             'password' => '<PASSWORD>',
         ]);
+        // Act
         $response = $this->post('api/auth/logout');
+        // Assert
         $response->assertRedirect(route('login'));
         $this->assertGuest();
     }
 
     public function testUpdate()
     {
+        // Arrange
         $user = User::factory()->create();
+        // Act
         $this->actingAs($user)->put(route('users.update', $user), [
             'name' => 'testUpdate',
             'email' => 'test.update@example.com'
         ]);
+        // Assert
         $this->assertDatabaseHas('users', [
             'name' => 'testUpdate',
             'email' => 'test.update@example.com'
@@ -70,6 +80,7 @@ class UserControllerTest extends TestCase
 
     public function testDestroy()
     {
+        // Arrange
         $user = User::factory()->create();
         $article = new Article();
         $article->title = 'Test Article Title Deleted';
@@ -79,8 +90,9 @@ class UserControllerTest extends TestCase
         $article->image = 'Test Article Image Deleted';
         $article->save();
         $article->tags()->attach(1);
-
+        // Act
         $this->actingAs($user)->delete(route('users.destroy', $user));
+        // Assert
         $this->assertDatabaseMissing('users', [
             'name' => $user->name,
             'email' => $user->email,

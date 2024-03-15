@@ -13,7 +13,9 @@ class ArticleControllerTest extends TestCase
 
     public function testStore()
     {
+        // Arrange
         $user = User::factory()->create();
+        // Act
         $this->actingAs($user)->post(route('articles.store'), [
             'title' => 'Test Article Title',
             'body' => 'Test Article Body',
@@ -21,6 +23,7 @@ class ArticleControllerTest extends TestCase
             'user_id' => $user->id,
             'image' => 'Test Article Image',
         ]);
+        // Assert
         $this->assertDatabaseHas('articles', [
             'title' => 'Test Article Title',
             'body' => 'Test Article Body',
@@ -30,6 +33,7 @@ class ArticleControllerTest extends TestCase
     }
     public function testUpdate()
     {
+        // Arrange
         $user = User::factory()->create();
         $article = new Article;
         $article->title = '';
@@ -38,12 +42,14 @@ class ArticleControllerTest extends TestCase
         $article->user_id = $user->id;
         $article->image = '';
         $article->save();
+        // Act
         $this->actingAs($user)->put(route('articles.update', [$article]), [
             'title' => 'Test Article Title Updated',
             'body' => 'Test Article Body Updated',
             'image' => 'Test Article Image Updated',
             'tags' => [0]
         ]);
+        // Assert
         $this->assertDatabaseHas('articles', [
             'title' => 'Test Article Title Updated',
             'body' => 'Test Article Body Updated',
@@ -57,6 +63,7 @@ class ArticleControllerTest extends TestCase
 
     public function testDestroy()
     {
+        // Arrange
         $user = User::factory()->create();
         $article = new Article;
         $article->title = 'Test Article Title Deleted';
@@ -66,8 +73,9 @@ class ArticleControllerTest extends TestCase
         $article->image = 'Test Article Image Deleted';
         $article->save();
         $article->tags()->attach(1);
-
+        // Act
         $this->actingAs($user)->delete(route('articles.destroy', $article));
+        // Assert
         $this->assertSoftDeleted('articles', [
             'title' => 'Test Article Title Deleted',
             'body' => 'Test Article Body Deleted',
