@@ -26,14 +26,13 @@ class TagService
         return $this->repo->create($validated);
     }
 
-    public function update(array $validated): bool
+    public function update(array $validated): void
     {
-        return $this->repo->update($validated);
+        $this->repo->update($validated);
     }
 
-    public function delete(string $id): bool
+    public function delete(string $id): void
     {
         $this->repo->delete($id);
-        return true;
     }
 }

@@ -31,19 +31,17 @@ class ArticleService
         return $this->repo->find($id);
     }
 
-    public function update(array $validated, Article $article): bool
+    public function update(array $validated, Article $article): void
     {
         $records = $article->records;
         $records['time']++;
         $validated['records'] = $records;
         $validated['id'] = $article->id;
         $this->repo->update($validated);
-        return true;
     }
 
-    public function delete(Article $article): bool
+    public function delete(Article $article): void
     {
         $this->repo->delete($article);
-        return true;
     }
 }

@@ -62,10 +62,7 @@ class UserController extends Controller
     {
         $userId = $request->route('userId');
         Gate::authorize('delete-user', $userId);
-        $result = $this->service->delete($userId);
-        if ($result) {
-            return response()->json(['message' => 'User deleted']);
-        }
-        return response()->json(['message' => 'Fail to delete']);
+        $this->service->delete($userId);
+        return response()->json(['message' => 'User deleted']);
     }
 }

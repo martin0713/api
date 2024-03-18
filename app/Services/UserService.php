@@ -60,25 +60,18 @@ class UserService
         return redirect(route('login'));
     }
 
-    public function update(array $validated, string $userId): \Illuminate\Http\JsonResponse |User
+    public function update(array $validated, string $userId): User
     {
-        $result = $this->userRepo->update($validated, $userId);
-        if ($result) {
-            $user = Auth::user()->refresh();
-            Auth::login($user);
-            $this->cacheRepo->setUser($userId, $user);
-            return $user;
-        }
-        throw new HttpResponseException(response()->json(['message' => 'Fail to update']));
+        $this->userRepo->update($validated, $userId);
+        $user = Auth::user()->refresh();
+        Auth::login($user);
+        $this->cacheRepo->setUser($userId, $user);
+        return $user;
     }
 
-    public function delete(string $userId): bool
+    public function delete(string $userId): void
     {
-        $result = $this->userRepo->delete($userId);
-        if ($result) {
-            $this->cacheRepo->deleteUser($userId);
-            return true;
-        }
-        return false;
+        $this->userRepo->delete($userId);
+        $this->cacheRepo->deleteUser($userId);
     }
 }
