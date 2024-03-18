@@ -69,7 +69,10 @@ class ArticleController extends Controller
         }
         $validated = $request->validated();
         $result = $this->service->update($validated, $article);
-        return response()->json(['message' => $result]);
+        if ($result) {
+            return response()->json(['message' => 'Article updated']);
+        }
+        return response()->json(['message' => 'Fail to update']);
     }
 
     /**
@@ -78,13 +81,16 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function destroy(Article $article): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    public function destroy(Article $article): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user();
         if ($user->cant('delete', $article)) {
             return response()->json(['message' => 'You don\'t have permission to delete']);
         }
-        $this->service->delete($article);
-        return redirect(route('articles.index'));
+        $result = $this->service->delete($article);
+        if ($result) {
+            return response()->json(['message' => 'Article deleted']);
+        }
+        return response()->json(['message' => 'Fail to delete']);
     }
 }

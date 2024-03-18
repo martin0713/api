@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\EmptyResource;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -26,37 +29,43 @@ class UserController extends Controller
         }
         return UserResource::make($data)->response();
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UserStoreRequest $request)
+
+    public function store(UserStoreRequest $request): \Illuminate\Http\Response
     {
         $validated = $request->validated();
         $data = $this->service->create($validated);
         return response(new UserResource($data), 201);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function login(UserLoginRequest $request)
+
+    public function login(UserLoginRequest $request): \Illuminate\Http\Response
     {
         $validated = $request->validated();
         $data = $this->service->login($validated);
-        return response(new UserResource($data), 201);
+        return response(new UserResource($data));
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function logout()
+
+    public function logout(): \Illuminate\Http\RedirectResponse
     {
         return $this->service->logout();
+    }
+
+    public function update(UserUpdateRequest $request): \Illuminate\Http\Response
+    {
+        $userId = $request->route('userId');
+        Gate::authorize('update-user', $userId);
+        $validated = $request->validated();
+        $data = $this->service->update($validated, $userId);
+        return response(new UserResource($data));
+    }
+
+    public function destroy(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $userId = $request->route('userId');
+        Gate::authorize('delete-user', $userId);
+        $result = $this->service->delete($userId);
+        if ($result) {
+            return response()->json(['message' => 'User deleted']);
+        }
+        return response()->json(['message' => 'Fail to delete']);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ArticleStoreRequest extends FormRequest
 {
@@ -43,5 +45,9 @@ class ArticleStoreRequest extends FormRequest
         ];
     }
 
-    protected $redirect = '/failure';
+    public function failedValidation(Validator $validator)
+    {
+        //write your bussiness logic here otherwise it will give same old JSON response
+        throw new HttpResponseException(response()->json($validator->errors(), 400));
+    }
 }

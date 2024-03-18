@@ -12,7 +12,7 @@ class UserRepository
 
     public function find(string $id): User |null
     {
-        return $this->model->find($id);
+        return $this->model::with(['articles.tags'])->find($id);
     }
 
     public function create(array $validated): User
@@ -23,5 +23,15 @@ class UserRepository
     public function getUserByEmail(string $mail): User |null
     {
         return $this->model->where('email', $mail)->first();
+    }
+
+    public function update(array $validated, string $id): int
+    {
+        return $this->model->find($id)->update($validated);
+    }
+
+    public function delete(string $id): int
+    {
+        return $this->model->find($id)->delete();
     }
 }

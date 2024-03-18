@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
-class TagStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,8 @@ class TagStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:tags,name,' . $this->id,
+            'name' => 'required|min:3|max:20',
+            'email' => 'required|email|unique:users,email,' . $this->userId
         ];
     }
 
@@ -34,19 +35,16 @@ class TagStoreRequest extends FormRequest
     {
         return [
             'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.unique' => 'The name field must be unique.'
+            'name.min' => 'The name must be at least 3 characters.',
+            'name.max' => 'The name may not be greater than 20 characters.',
+            'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'email.unique' => 'The email has already been taken.',
         ];
     }
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     **/
+
     public function failedValidation(Validator $validator)
     {
-        //write your bussiness logic here otherwise it will give same old JSON response
         throw new HttpResponseException(response()->json($validator->errors(), 400));
     }
 }
